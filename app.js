@@ -5,9 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var hotelRouter = require('./routes/hotel/hotel');
-var roomRouter = require('./routes/room/room');
-var userRouter = require('./routes/user/user');
 
 // Swagger configuration
 const swaggerJSDoc = require('swagger-jsdoc');
@@ -37,7 +34,7 @@ const swaggerDefinition = {
 
 const options = {
     swaggerDefinition,
-    apis: ['./routes/*.js']
+    apis: ['./routes/**/*.route.js']
 }
 
 const swaggerSpec = swaggerJSDoc(options);
@@ -50,9 +47,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/hotel', hotelRouter);
-app.use('/room', roomRouter);
-app.use('/user', userRouter);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/', indexRouter);
