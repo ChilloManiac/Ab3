@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 
-//DB setup
-db = mongoose.connect('mongodb://localhost/student-db');
+
+
 
 module.exports = app;
