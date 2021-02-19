@@ -1,7 +1,6 @@
 async function HelloWorld() {
-    return "Hello World user"
+    return "Hello World room"
 }
-
 
 module.exports = {
     HelloWorld
