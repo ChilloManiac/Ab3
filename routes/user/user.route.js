@@ -1,17 +1,20 @@
-const express = require('express');
+const express = require("express");
+const { isAdmin, verifyToken } = require("../../middleware/authentication");
 const router = express.Router();
-const userController = require('./user.controller')
+const userController = require("./user.controller");
 
 /**
  *  @swagger
  *  /user:
  *    get:
- *      summary: Hello world endpoint
- *      description: Temporary hello world endpoint for testing purposes
+ *      summary: Login endpoint
+ *      description:
  *      responses:
  *          description: A string
  *          content: application/json
  */
-router.get('', userController.getWorld)
+router.post("/login", userController.login);
+router.post("/register", userController.register);
+router.post("/changeRole", [verifyToken, isAdmin], userController.changeRole);
 
-module.exports = router
+module.exports = router;
