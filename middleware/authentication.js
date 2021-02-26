@@ -42,6 +42,5 @@ function hasRole(role) {
 
 module.exports = {
     verifyToken,
-    isAdmin,
     hasRole,
 };
