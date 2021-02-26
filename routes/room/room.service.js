@@ -1,8 +1,13 @@
-Room = require("../../models/room")
 const { HttpError } = require("../../middleware/errorHandler");
 const Hotel = require("../../models/hotel");
-const Room = require("../../models/room");
 
+
+async function getHotelByName(hotelName){
+    hotel = Hotel.findOne({hotelName});
+    if (!hotel) {
+        throw new HttpError(400, `Hotel ${hotelName} does not exist.`);
+    }
+}
 
 async function getRoomsByHotel(hotelName) {
     const hotel = await getHotelByName(hotelName);
