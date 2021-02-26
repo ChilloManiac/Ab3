@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { HttpError } = require("../../middleware/errorHandler");
 const { isRoleValid } = require("../../utilities/role.utility");
 
+
 async function register(username, role, password) {
   if (!isRoleValid(role)) {
     throw new HttpError(400, "Invalid role.");
@@ -60,5 +61,5 @@ async function changeRole(username, role) {
 module.exports = {
   login,
   register,
-  changeRole
+  changeRole,
 };
