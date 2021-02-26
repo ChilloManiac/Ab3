@@ -25,9 +25,9 @@ async function getRoomByRoomNumber(hotelName, number) {
 
 async function createRoom(hotelName,room) {
     const newRoom = new Room({
-        roomNumber = room.roomNumber,
-        numberOfBeds = room.numberOfBeds,
-        isOccupied = room.isOccupied
+        roomNumber : room.roomNumber,
+        numberOfBeds : room.numberOfBeds,
+        isOccupied : room.isOccupied
     })
     
     let hotel = await getHotelByName(hotelName);
@@ -36,9 +36,9 @@ async function createRoom(hotelName,room) {
     try {
         await hotel.save()
         return {
-            roomNumber = newRoom.isOccupied,
-            numberOfBeds = newRoom.numberOfBeds,
-            isOccupied = newRoom.isOccupied
+            roomNumber : newRoom.isOccupied,
+            numberOfBeds : newRoom.numberOfBeds,
+            isOccupied : newRoom.isOccupied
         };
     }
     catch (error){

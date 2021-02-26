@@ -13,6 +13,7 @@ const hotelSchema = new mongoose.Schema({
     zip: { type: Number, required: true },
     rooms: {type: [roomSchema], required: true}
 });
+
 const Hotel = mongoose.model('Hotel', hotelSchema);
 Hotel.createIndexes();
 
