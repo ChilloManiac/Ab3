@@ -8,7 +8,7 @@ const getHotels = async () => {
 const getHotel = async (hotelName) => {
   const hotel = await Hotel.findOne({ name: hotelName });
   if (!hotel) {
-    throw new HttpError(400, "Hotel does not exist");
+    throw new HttpError(400, `Hotel ${hotelName} does not exist.`);
   } else {
     return hotel;
   }
@@ -55,9 +55,86 @@ const addHotel = async (
   }
 };
 
+async function getVacantRooms(hotelName) {
+  const hotel = await getHotel(hotelName);
+  return hotel.rooms.map((rooms) => !room.isOccupied);
+}
+
+async function getRoomByRoomNumber(hotelName, roomNumber) {
+  const hotel = await getHotel(hotelName);
+  let room = hotel.rooms.map((room) => room.roomNumber == roomNumber);
+  if (!room) {
+    throw new HttpError(400, "Room does not exist.");
+  }
+  return room;
+}
+
+async function createRoom(hotelName, room) {
+  const newRoom = new Room({
+    roomNumber: room.roomNumber,
+    numberOfBeds: room.numberOfBeds,
+    isOccupied: room.isOccupied,
+  });
+
+  let hotel = await getHotel(hotelName);
+
+  hotel.rooms.push(newRoom);
+  try {
+    await hotel.save();
+    return {
+      roomNumber: newRoom.isOccupied,
+      numberOfBeds: newRoom.numberOfBeds,
+      isOccupied: newRoom.isOccupied,
+    };
+  } catch (error) {
+    throw new HttpError(400, `Couldn't save new room in ${hotelName}`);
+  }
+}
+
+async function markRoomAsVacant(hotelName, roomNumber) {
+  const hotel = await getHotel(hotelName);
+  const room = await hotel.rooms.findOne({ roomNumber: roomNumber });
+  if (!room) {
+    throw new HttpError(400, `Room ${roomNumber} does not exist in ${hotel}`);
+  }
+  room.isOccupied = false;
+  try {
+    newRoom = await room.save();
+    return {
+      roomNumber: newRoom.roomNumber,
+      numberOfBeds: newRoom.numberOfBeds,
+      isOccupied: newRoom.isOccupied,
+    };
+  } catch (error) {
+    throw new HttpError(400, `Couldn't save room ${roomNumber} in ${hotel}`);
+  }
+}
+
+async function markRoomAsOccupied(hotelName, roomNumber) {
+  const hotel = await getHotel(hotelName);
+  const room = await hotel.rooms.findOne({ roomNumber: roomNumber });
+  // Insert error check
+  room.isOccupied = true;
+  try {
+    newRoom = await room.save();
+    return {
+      roomNumber: newRoom.roomNumber,
+      numberOfBeds: newRoom.numberOfBeds,
+      isOccupied: newRoom.isOccupied,
+    };
+  } catch {
+    throw new HttpError(400, `Couldn't save room ${roomNumber} in ${hotel}`);
+  }
+}
+
 module.exports = {
   getHotels,
   getHotel,
   addHotel,
   addRoom,
+  getVacantRooms,
+  getRoomByRoomNumber,
+  createRoom,
+  markRoomAsVacant,
+  markRoomAsOccupied,
 };
