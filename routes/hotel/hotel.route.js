@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const hotelController = require('./hotel.controller')
+const hotelController = require('./hotel.controller');
+const { verifyToken, hasRole } = require("../../middleware/authentication");
+const {Roles} = require("../../utilities/role.utility")
 
 /**
  *  @swagger
@@ -202,7 +204,10 @@ router.post('', hotelController.addHotel)
  *                          description: True if the room is already occupied
  *                          example: true
  */
-router.get('/:name', hotelController.getHotel)
+router.get('', [verifyToken], hotelController.getHotels)
+router.post('', [verifyToken, hasRole(Roles.Manager)], hotelController.addHotel)
+router.post('/room', [verifyToken, hasRole(Roles.Manager)], hotelController.addRoom)
+router.get('/:name', [verifyToken], hotelController.getHotel)
 
 module.exports = router
 
