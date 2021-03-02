@@ -28,7 +28,7 @@ const addHotel = (req, res, next) => {
 };
 
 const getHotel = (req, res, next) => {
-  const { name } = req.param;
+  const { name } = req.params;
   hotelService
     .getHotel(name)
     .then((hotel) => res.status(200).send(hotel))
@@ -36,7 +36,7 @@ const getHotel = (req, res, next) => {
 };
 
 const addRoom = (req, res, next) => {
-  const { name } = req.param;
+  const { name } = req.params;
   console.log(name)
   const { roomNumber, numberOfBeds } = req.body;
   if (!name || !roomNumber || !numberOfBeds) {
@@ -53,7 +53,7 @@ const addRoom = (req, res, next) => {
 };
 
 const getVacantRooms = (req, res, next) => {
-  const hotelName = req.param;
+  const hotelName = req.params;
   hotelService
     .getVacantRooms(hotelName)
     .then((rooms) => res.status(200).send(rooms))
