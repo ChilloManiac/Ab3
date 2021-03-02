@@ -7,7 +7,7 @@ async function getAllVacantRooms(){
     return hotels
       .flatMap((hotel) => 
         hotel.rooms.map((room) => ({...room, hotelName: hotel.name})
-      .filter((room) => !room.isOccupied)
+      .filter((room) => !room.isOccupied)))
 }
 
 module.exports = {

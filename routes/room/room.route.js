@@ -4,8 +4,7 @@ const roomController = require('./room.controller')
 const { hasRole, isAdmin, verifyToken } = require("../../middleware/authentication");
 
 
-router.post("/getRoomsByHotel", [verifyToken], roomController.getRoomsByHotel);
-router.post("/getVacantRoomsByHotel", [verifyToken], roomController.getVacantRoomsByHotel);
-router.post("/getRoomByRoomNumber", [verifyToken], roomController.getRoomByRoomNumber);
+router.get("/VacantRooms", [verifyToken], roomController.getAllVacantRooms);
+
 
 module.exports = router
