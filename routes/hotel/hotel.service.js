@@ -6,7 +6,7 @@ const getHotels = async () => {
 }
 
 const getHotel = async (hotelName) => {
-    return Hotel.findOne({hotelName});
+    return await Hotel.findOne({hotelName});
     if (!hotel) {
         throw new HttpError(400, `Hotel ${hotelName} does not exist.`);
     }
