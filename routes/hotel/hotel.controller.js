@@ -61,9 +61,11 @@ const getVacantRooms = (req, res, next) => {
 };
 
 const updateRoom = (req, res, next) => {
-  const {name, room} = req.body;
-  hotelService.updateRoom(name, room)
-    .then((room)=> res.status(200))
+  const {name, roomNumber} = req.params;
+  const {numberOfBeds, isOccupied} = req.body;
+
+  hotelService.updateRoom(name, {numberOfBeds,isOccupied}, roomNumber)
+    .then((room)=> res.status(200).send(room))
     .catch((error)=> next(error));
 }
 

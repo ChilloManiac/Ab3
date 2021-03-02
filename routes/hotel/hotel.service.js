@@ -80,20 +80,20 @@ async function getRoomByRoomNumber(hotelName, roomNumber) {
           isOccupied : room.isOccupied}
 }
 
-async function updateRoom(hotelName, updatedRoom) {
+async function updateRoom(hotelName, updatedRoom, roomNumber) {
   const hotel = await getHotel(hotelName);
-  const room = await hotel.rooms.findOne({ roomNumber: roomNumber });
+  let room = hotel.rooms.find((room) => room.roomNumber == roomNumber);
   if (!room) {
-    throw new HttpError(400, `Room ${roomNumber} does not exist in ${hotelName}`);
+    throw new HttpError(400, "Room does not exist.");
   }
   room.isOccupied = updatedRoom.isOccupied;
-  room.numberOfBeds = updateRoom.numberOfBeds;
+  room.numberOfBeds = updatedRoom.numberOfBeds;
   try{
-  roomAfterSave =  await room.save();
+  roomAfterSave =  await hotel.save();
   return {
-    roomNumber: roomAfterSave.roomNumber,
-    numberOfBeds: roomAfterSave.numberOfBeds,
-    isOccupied: roomAfterSave.isOccupied}
+    roomNumber: room.roomNumber,
+    numberOfBeds: room.numberOfBeds,
+    isOccupied: room.isOccupied}
   }
   catch(error){
     throw new HttpError(400, `Couldn't save room ${roomNumber} in ${hotelName}`);
