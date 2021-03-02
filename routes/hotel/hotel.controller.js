@@ -53,36 +53,45 @@ const addRoom = (req, res, next) => {
 };
 
 const getVacantRooms = (req, res, next) => {
-  const hotelName = req.params;
+  const {name} = req.params;
   hotelService
-    .getVacantRooms(hotelName)
+    .getVacantRooms(name)
     .then((rooms) => res.status(200).send(rooms))
     .catch((error) => next(error));
 };
 
+const updateRoom = (req, res, next) => {
+  const {name, room} = req.body;
+  hotelService.updateRoom(name, room)
+    .then((room)=> res.status(200))
+    .catch((error)=> next(error));
+}
+
 const getRoomByRoomNumber = (req, res, next) => {
-  const {hotelName, roomNumber} = req.body;
+  const {name, roomNumber} = req.params;
   hotelService
-    .getRoomByRoomNumber(hotelName, roomNumber)
+    .getRoomByRoomNumber(name, roomNumber)
     .then((room) => res.status(200).send(room))
     .catch((error) => next(error));
 };
 
 const markRoomAsVacant = (req, res, next) => {
-  const {hotelName, roomNumber} = req.body;
+  const {name, roomNumber} = req.body;
   hotelService
-    .markRoomAsVacant(hotelName, roomNumber)
+    .markRoomAsVacant(name, roomNumber)
     .then((room) => res.status(200).send(room))
     .catch((error) => next(error));
 };
 
 const markRoomAsOccupied = (req, res, next) => {
-  const {hotelName, roomNumber} = req.body;
+  const {name, roomNumber} = req.body;
   hotelService
-    .markRoomAsOccupied(hotelName, roomNumber)
+    .markRoomAsOccupied(name, roomNumber)
     .then((room) => res.status(200).send(room))
     .catch((error) => next(error));
 };
+
+
 
 module.exports = {
   getHotels,
@@ -93,4 +102,5 @@ module.exports = {
   getRoomByRoomNumber,
   markRoomAsVacant,
   markRoomAsOccupied,
+  updateRoom,
 };

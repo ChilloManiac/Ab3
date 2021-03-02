@@ -143,7 +143,10 @@ const {Roles} = require("../../utilities/role.utility")
  */
 router.get('', [verifyToken], hotelController.getHotels)
 router.post('', [verifyToken, hasRole(Roles.Manager)], hotelController.addHotel)
+router.get('/:name/room/:roomNumber', [verifyToken, hasRole(Roles.Manager)], hotelController.getRoomByRoomNumber)
+router.get('/:name/room', [verifyToken, hasRole(Roles.Manager)], hotelController.getVacantRooms)
 router.post('/:name/room', [verifyToken, hasRole(Roles.Manager)], hotelController.addRoom)
+router.put('/:name/room/:roomNumber', [verifyToken, hasRole(Roles.Manager)], hotelController.updateRoom)
 /**
  *  @swagger
  *  /hotel/{name}:
