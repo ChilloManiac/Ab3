@@ -24,7 +24,7 @@ const addRoom = async (hotelName, roomNumber, numberOfBeds, verifiedUser) => {
     };
     hotel.rooms.push(room);
     try {
-      return Hotel.findByIdAndUpdate(hotel._id, hotel);
+      return await hotel.save();
     } catch (error) {
       throw new HttpError(400, "Roomnumber already exists.");
     }
