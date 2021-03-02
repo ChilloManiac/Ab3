@@ -69,28 +69,6 @@ async function getRoomByRoomNumber(hotelName, roomNumber) {
   return room;
 }
 
-async function createRoom(hotelName, room) {
-  const newRoom = new Room({
-    roomNumber: room.roomNumber,
-    numberOfBeds: room.numberOfBeds,
-    isOccupied: room.isOccupied,
-  });
-
-  let hotel = await getHotel(hotelName);
-
-  try {
-    hotel.rooms.push(newRoom);
-    await hotel.save();
-    return {
-      roomNumber: newRoom.isOccupied,
-      numberOfBeds: newRoom.numberOfBeds,
-      isOccupied: newRoom.isOccupied,
-    };
-  } catch (error) {
-    throw new HttpError(400, `Couldn't save new room in ${hotelName}`);
-  }
-}
-
 async function markRoomAsVacant(hotelName, roomNumber) {
   const hotel = await getHotel(hotelName);
   const room = await hotel.rooms.findOne({ roomNumber: roomNumber });
@@ -134,7 +112,6 @@ module.exports = {
   addRoom,
   getVacantRooms,
   getRoomByRoomNumber,
-  createRoom,
   markRoomAsVacant,
   markRoomAsOccupied,
 };
