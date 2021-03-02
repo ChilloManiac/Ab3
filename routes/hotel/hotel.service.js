@@ -24,7 +24,7 @@ const addRoom = async (hotelName, roomNumber, numberOfBeds, verifiedUser) => {
     };
     hotel.rooms.push(room);
     try {
-      return Hotel.findByIdAndUpdate(hotel._id, hotel);
+      return await hotel.save();
     } catch (error) {
       throw new HttpError(400, "Roomnumber already exists.");
     }
@@ -67,28 +67,6 @@ async function getRoomByRoomNumber(hotelName, roomNumber) {
     throw new HttpError(400, "Room does not exist.");
   }
   return room;
-}
-
-async function createRoom(hotelName, room) {
-  const newRoom = new Room({
-    roomNumber: room.roomNumber,
-    numberOfBeds: room.numberOfBeds,
-    isOccupied: room.isOccupied,
-  });
-
-  let hotel = await getHotel(hotelName);
-
-  hotel.rooms.push(newRoom);
-  try {
-    await hotel.save();
-    return {
-      roomNumber: newRoom.isOccupied,
-      numberOfBeds: newRoom.numberOfBeds,
-      isOccupied: newRoom.isOccupied,
-    };
-  } catch (error) {
-    throw new HttpError(400, `Couldn't save new room in ${hotelName}`);
-  }
 }
 
 async function markRoomAsVacant(hotelName, roomNumber) {
@@ -134,7 +112,6 @@ module.exports = {
   addRoom,
   getVacantRooms,
   getRoomByRoomNumber,
-  createRoom,
   markRoomAsVacant,
   markRoomAsOccupied,
 };

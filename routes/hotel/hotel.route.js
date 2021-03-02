@@ -206,4 +206,3 @@ router.post('/room', [verifyToken, hasRole(Roles.Manager)], hotelController.addR
  */
 router.get('/:name', [verifyToken], hotelController.getHotel)
 module.exports = router
-

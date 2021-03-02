@@ -1,6 +1,10 @@
 const express = require("express");
-const { hasRole, isAdmin, verifyToken } = require("../../middleware/authentication");
-const {Roles} = require("../../utilities/role.utility")
+const {
+  hasRole,
+  isAdmin,
+  verifyToken,
+} = require("../../middleware/authentication");
+const { Roles } = require("../../utilities/role.utility");
 const router = express.Router();
 const userController = require("./user.controller");
 
@@ -16,6 +20,10 @@ const userController = require("./user.controller");
  */
 router.post("/login", userController.login);
 router.post("/register", userController.register);
-router.post("/changeRole", [verifyToken, hasRole(Roles.Admin)], userController.changeRole);
+router.post(
+  "/changeRole",
+  [verifyToken, hasRole(Roles.Admin)],
+  userController.changeRole
+);
 
 module.exports = router;
