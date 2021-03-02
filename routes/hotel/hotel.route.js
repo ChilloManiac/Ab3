@@ -61,7 +61,6 @@ const {Roles} = require("../../utilities/role.utility")
  *      summary: Create a hotel
  *      description: Create a hotel if you are a manager
  *      requestBody:
- *        description: AAAAAAAAAAAAAAAAAAAAAA
  *        required: true
  *        content:
  *          application/json:
