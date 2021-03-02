@@ -1,5 +1,4 @@
 const roomService = require("./room.service");
-const { HttpError } = require("../../middleware/errorHandler");
 
 function getAllVacantRooms(req, res, next) {
   roomService
