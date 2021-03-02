@@ -60,8 +60,7 @@ const getVacantRooms = (req, res, next) => {
 };
 
 const getRoomByRoomNumber = (req, res, next) => {
-  const hotelName = req.body.hotelName;
-  const roomNumber = req.body.roomNumber;
+  const {hotelName, roomNumber} = req.body;
   hotelService
     .getRoomByRoomNumber(hotelName, roomNumber)
     .then((room) => res.status(200).send(room))
@@ -69,8 +68,7 @@ const getRoomByRoomNumber = (req, res, next) => {
 };
 
 const markRoomAsVacant = (req, res, next) => {
-  const hotelName = req.body.hotelName;
-  const roomNumber = req.body.roomNumber;
+  const {hotelName, roomNumber} = req.body;
   hotelService
     .markRoomAsVacant(hotelName, roomNumber)
     .then((room) => res.status(200).send(room))
@@ -78,8 +76,7 @@ const markRoomAsVacant = (req, res, next) => {
 };
 
 const markRoomAsOccupied = (req, res, next) => {
-  const hotelName = req.body.hotelName;
-  const roomNumber = req.body.roomNumber;
+  const {hotelName, roomNumber} = req.body;
   hotelService
     .markRoomAsOccupied(hotelName, roomNumber)
     .then((room) => res.status(200).send(room))
