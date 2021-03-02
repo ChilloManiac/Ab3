@@ -7,6 +7,9 @@ const getHotels = async () => {
 
 const getHotel = async (hotelName) => {
     return Hotel.findOne({hotelName});
+    if (!hotel) {
+        throw new HttpError(400, `Hotel ${hotelName} does not exist.`);
+    }
 }
 
 const addHotel = async (hotelName, streetName, houseNumber, zip) => {
@@ -25,12 +28,12 @@ const addHotel = async (hotelName, streetName, houseNumber, zip) => {
 }
 
 async function getVacantRooms(hotelName) {
-    const hotel = await getHotelByName(hotelName);
+    const hotel = await getHotel(hotelName);
     return hotel.rooms.map(rooms => !room.isOccupied);        
 }
 
 async function getRoomByRoomNumber(hotelName, roomNumber) {
-    const hotel = await getHotelByName(hotelName);
+    const hotel = await getHotel(hotelName);
     let room = hotel.rooms.map(room => room.roomNumber == roomNumber);
     if (!room) {
         throw new HttpError(400, "Room does not exist.");
@@ -45,7 +48,7 @@ async function createRoom(hotelName,room) {
         isOccupied : room.isOccupied
     })
     
-    let hotel = await getHotelByName(hotelName);
+    let hotel = await getHotel(hotelName);
     
     hotel.rooms.push(newRoom)
     try {
@@ -63,7 +66,7 @@ async function createRoom(hotelName,room) {
 
 
 async function markRoomAsVacant(hotelName, roomNumber){
-    const hotel = await getHotelByName(hotelName);
+    const hotel = await getHotel(hotelName);
     const room = await hotel.rooms.findOne({roomNumber : roomNumber})
     if (!room) {
         throw new HttpError(400, `Room ${roomNumber} does not exist in ${hotel}`)
@@ -82,7 +85,7 @@ async function markRoomAsVacant(hotelName, roomNumber){
 }
 
 async function markRoomAsOccupied(hotelName, roomNumber){
-    const hotel = await getHotelByName(hotelName);
+    const hotel = await getHotel(hotelName);
     const room = await hotel.rooms.findOne({roomNumber : roomNumber})
     // Insert error check
     room.isOccupied = true;
