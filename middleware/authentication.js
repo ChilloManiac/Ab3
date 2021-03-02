@@ -5,6 +5,9 @@ const { Roles } = require("../utilities/role.utility");
 
 function verifyToken(req, res, next) {
   const authHeader = req.header("Authorization");
+  if(!authHeader) {
+    throw new HttpError(401, "No token provided")
+  }
   const [type, token] = [authHeader.substring(0, 6), authHeader.substring(7)];
   if (type !== "Bearer" && !token) {
     throw new HttpError(401, "Invalid token");
