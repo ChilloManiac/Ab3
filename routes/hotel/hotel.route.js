@@ -211,7 +211,7 @@ router.post(
   hotelController.addHotel
 );
 router.post(
-  "/room",
+  ":name/room",
   [verifyToken, hasRole(Roles.Manager)],
   hotelController.addRoom
 );

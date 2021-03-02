@@ -36,8 +36,9 @@ const getHotel = (req, res, next) => {
 };
 
 const addRoom = (req, res, next) => {
-  const { hotelName, roomNumber, numberOfBeds } = req.body;
-  if (!hotelName || !roomNumber || !numberOfBeds) {
+  const { name } = req.param;
+  const { roomNumber, numberOfBeds } = req.body;
+  if (!name || !roomNumber || !numberOfBeds) {
     throw new HttpError(400, "Hotelname, roomNumber or numberOfBeds missing.");
   }
   const verifiedUser = req.verifiedUser;
@@ -45,7 +46,7 @@ const addRoom = (req, res, next) => {
     throw new HttpError(403, "Token not verified.");
   }
   hotelService
-    .addRoom(hotelName, roomNumber, numberOfBeds, verifiedUser)
+    .addRoom(name, roomNumber, numberOfBeds, verifiedUser)
     .then((room) => res.status(200).send(room))
     .catch((error) => next(error));
 };
