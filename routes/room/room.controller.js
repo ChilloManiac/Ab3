@@ -11,6 +11,6 @@ function getAllVacantRooms(req, res, next) {
 
 
 module.exports = {
-
+    getAllVacantRooms,
 }
 
