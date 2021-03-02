@@ -61,7 +61,6 @@ const {Roles} = require("../../utilities/role.utility")
  *      summary: Create a hotel
  *      description: Create a hotel if you are a manager
  *      requestBody:
- *        description: AAAAAAAAAAAAAAAAAAAAAA
  *        required: true
  *        content:
  *          application/json:
@@ -142,9 +141,9 @@ const {Roles} = require("../../utilities/role.utility")
  *           description: Forbidden - Will be thrown if the user is not in the 'manager' role
  *
  */
-
-router.get('', hotelController.getHotels)
-router.post('', hotelController.addHotel)
+router.get('', [verifyToken], hotelController.getHotels)
+router.post('', [verifyToken, hasRole(Roles.Manager)], hotelController.addHotel)
+router.post('/room', [verifyToken, hasRole(Roles.Manager)], hotelController.addRoom)
 /**
  *  @swagger
  *  /hotel/{name}:
@@ -204,10 +203,5 @@ router.post('', hotelController.addHotel)
  *                          description: True if the room is already occupied
  *                          example: true
  */
-router.get('', [verifyToken], hotelController.getHotels)
-router.post('', [verifyToken, hasRole(Roles.Manager)], hotelController.addHotel)
-router.post('/room', [verifyToken, hasRole(Roles.Manager)], hotelController.addRoom)
 router.get('/:name', [verifyToken], hotelController.getHotel)
-
 module.exports = router
-

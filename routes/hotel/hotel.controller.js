@@ -67,15 +67,6 @@ const getRoomByRoomNumber = (req, res, next) => {
     .catch((error) => next(error));
 };
 
-const createRoom = (req, res, next) => {
-  const hotelName = req.body.hotelName;
-  const room = req.body.room;
-  hotelService
-    .createRoom(hotelName, room)
-    .then((room) => res.status(201).send(room))
-    .catch((error) => next(error));
-};
-
 const markRoomAsVacant = (req, res, next) => {
   const hotelName = req.body.hotelName;
   const roomNumber = req.body.roomNumber;
@@ -101,7 +92,6 @@ module.exports = {
   addRoom,
   getVacantRooms,
   getRoomByRoomNumber,
-  createRoom,
   markRoomAsVacant,
   markRoomAsOccupied,
 };
