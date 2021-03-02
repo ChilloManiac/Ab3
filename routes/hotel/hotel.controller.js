@@ -36,7 +36,8 @@ const getHotel = (req, res, next) => {
 };
 
 const addRoom = (req, res, next) => {
-  const { name } = req.param;
+  const { name } = req.params;
+  console.log(name)
   const { roomNumber, numberOfBeds } = req.body;
   if (!name || !roomNumber || !numberOfBeds) {
     throw new HttpError(400, "Hotelname, roomNumber or numberOfBeds missing.");
@@ -52,7 +53,7 @@ const addRoom = (req, res, next) => {
 };
 
 const getVacantRooms = (req, res, next) => {
-  const hotelName = req.param;
+  const hotelName = req.params;
   hotelService
     .getVacantRooms(hotelName)
     .then((rooms) => res.status(200).send(rooms))
