@@ -66,7 +66,7 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   errorHandler(err, res);
 });
-console.log(process.env.DB_CONNECT);
+
 mongoose.connect(process.env.DB_CONNECT, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
