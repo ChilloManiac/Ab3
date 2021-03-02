@@ -78,8 +78,8 @@ async function createRoom(hotelName, room) {
 
   let hotel = await getHotel(hotelName);
 
-  hotel.rooms.push(newRoom);
   try {
+    hotel.rooms.push(newRoom);
     await hotel.save();
     return {
       roomNumber: newRoom.isOccupied,
