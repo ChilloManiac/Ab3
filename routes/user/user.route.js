@@ -29,6 +29,7 @@ const userController = require("./user.controller");
  *                 example: pw1234
  *               role:
  *                 type: string
+ *                 enum: ["admin", "user", "guest", "manager"]
  *                 description: Role of user
  *                 example: admin
  *             required:
@@ -97,6 +98,7 @@ const userController = require("./user.controller");
  *                   example: John Dillermand
  *                 role:
  *                   type: string
+ *                   enum: ["admin", "user", "guest", "manager"]
  *                   description: Role of user
  *                   example: admin
  * 
