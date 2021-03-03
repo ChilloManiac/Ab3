@@ -29,6 +29,10 @@ const addHotel = (req, res, next) => {
 
 const getHotel = (req, res, next) => {
   const { name } = req.params;
+  if (!name) {
+    throw new HttpError(400, "Hotelname missing.");
+  }
+
   hotelService
     .getHotel(name)
     .then((hotel) => res.status(200).send(hotel))
@@ -37,7 +41,6 @@ const getHotel = (req, res, next) => {
 
 const addRoom = (req, res, next) => {
   const { name } = req.params;
-  console.log(name)
   const { roomNumber, numberOfBeds } = req.body;
   if (!name || !roomNumber || !numberOfBeds) {
     throw new HttpError(400, "Hotelname, roomNumber or numberOfBeds missing.");
@@ -46,6 +49,7 @@ const addRoom = (req, res, next) => {
   if (!verifiedUser) {
     throw new HttpError(403, "Token not verified.");
   }
+
   hotelService
     .addRoom(name, roomNumber, numberOfBeds, verifiedUser)
     .then((room) => res.status(200).send(room))
@@ -53,7 +57,11 @@ const addRoom = (req, res, next) => {
 };
 
 const getVacantRooms = (req, res, next) => {
-  const {name} = req.params;
+  const { name } = req.params;
+  if (!name) {
+    throw new HttpError(400, "Name missing.");
+  }
+
   hotelService
     .getVacantRooms(name)
     .then((rooms) => res.status(200).send(rooms))
@@ -61,39 +69,33 @@ const getVacantRooms = (req, res, next) => {
 };
 
 const updateRoom = (req, res, next) => {
-  const {name, roomNumber} = req.params;
-  const {numberOfBeds, isOccupied} = req.body;
+  const { name, roomNumber } = req.params;
+  const { numberOfBeds, isOccupied } = req.body;
 
-  hotelService.updateRoom(name, {numberOfBeds,isOccupied}, roomNumber)
-    .then((room)=> res.status(200).send(room))
-    .catch((error)=> next(error));
-}
+  if (!name || !roomNumber || !numberOfBeds || !isOccupied) {
+    throw new HttpError(
+      400,
+      "Hotelname, roomNumber, numberOfBeds or isOccupied is missing."
+    );
+  }
+
+  hotelService
+    .updateRoom(name, { numberOfBeds, isOccupied }, roomNumber)
+    .then((room) => res.status(200).send(room))
+    .catch((error) => next(error));
+};
 
 const getRoomByRoomNumber = (req, res, next) => {
-  const {name, roomNumber} = req.params;
+  const { name, roomNumber } = req.params;
+  if (!name || !roomNumber) {
+    throw new HttpError(400, "Hotelname or roomNumber is missing.");
+  }
+
   hotelService
     .getRoomByRoomNumber(name, roomNumber)
     .then((room) => res.status(200).send(room))
     .catch((error) => next(error));
 };
-
-const markRoomAsVacant = (req, res, next) => {
-  const {name, roomNumber} = req.body;
-  hotelService
-    .markRoomAsVacant(name, roomNumber)
-    .then((room) => res.status(200).send(room))
-    .catch((error) => next(error));
-};
-
-const markRoomAsOccupied = (req, res, next) => {
-  const {name, roomNumber} = req.body;
-  hotelService
-    .markRoomAsOccupied(name, roomNumber)
-    .then((room) => res.status(200).send(room))
-    .catch((error) => next(error));
-};
-
-
 
 module.exports = {
   getHotels,
@@ -102,7 +104,5 @@ module.exports = {
   addRoom,
   getVacantRooms,
   getRoomByRoomNumber,
-  markRoomAsVacant,
-  markRoomAsOccupied,
   updateRoom,
 };
