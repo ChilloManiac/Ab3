@@ -5,4 +5,4 @@ const schema = new GraphQLSchema({
   query: QueryType,
 });
 
-module.exports = schema;
+module.exports = {schema};
