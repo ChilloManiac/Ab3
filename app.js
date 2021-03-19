@@ -6,8 +6,8 @@ var logger = require("morgan");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const { errorHandler } = require("./middleware/errorHandler");
-const { graphqlHTTP } = require('express-graphql');
-const { buildSchema } = require('graphql');
+const { graphqlHTTP } = require("express-graphql");
+const { schema } = require("./graphql/schema");
 
 var indexRouter = require("./routes/index");
 
@@ -45,18 +45,6 @@ const options = {
   apis: ["./routes/**/*.route.js"],
 };
 
-let schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
-
-let root = {
-  hello: function () {
-    return "Hello world!";
-  },
-};
-
 const swaggerSpec = swaggerJSDoc(options);
 
 dotenv.config();
@@ -69,13 +57,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use(
-  "/graphql",
+app.use("/graphql", (req, res) => {
+  console.log(schema)
   graphqlHTTP({
     schema: schema,
-    rootValue: root,
     graphiql: true,
-  })
+  })(req, res)
+}
 );
 app.use("/", indexRouter);
 
