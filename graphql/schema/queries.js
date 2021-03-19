@@ -4,11 +4,8 @@ const { GraphQLObjectType, GraphQLString } = require('graphql');
 const QueryType = new GraphQLObjectType({
   name: "Query",
   fields: {
-    taskInfo: {
-      type: GraphQLString,
-      resolve: async () => {
-        return "dav";
-      },
+    rooms: {
+        type: new GraphQLList(new GraphQLNonNull(Room)),
     },
   },
 });
