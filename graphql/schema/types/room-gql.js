@@ -9,13 +9,19 @@ const RoomGql = new GraphQLObjectType({
     name: 'Room',
     fields: {
         roomNumber: {
-            type: new GraphQLNonNull(GraphQLInt)
+            type: new GraphQLNonNull(GraphQLInt),
+            resolve: (source)=>{context.roomNumber}
+
         },
         numberOfBeds: {
-            type: new GraphQLNonNull(GraphQLInt)
+            type: new GraphQLNonNull(GraphQLInt),
+            resolve: (context)=>{context.roomNumber}
+
         },
         isOccupied: {
-            type: new GraphQLNonNull(GraphQLBoolean)
+            type: new GraphQLNonNull(GraphQLBoolean),
+            resolve: (context)=>{context.isOccupied}
+
         }
     }
 });

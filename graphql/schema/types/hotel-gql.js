@@ -6,7 +6,7 @@ import {
     GraphQLNonNull,
   } from 'graphql';
 
-import RoomGql from './room-gql'
+const RoomGql = require('./room-gql');
 
 // TODO: Change someApi
 const HotelGql = new GraphQLObjectType({
