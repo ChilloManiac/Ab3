@@ -6,6 +6,8 @@ var logger = require("morgan");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const { errorHandler } = require("./middleware/errorHandler");
+const { graphqlHTTP } = require('express-graphql');
+const { buildSchema } = require('graphql');
 
 var indexRouter = require("./routes/index");
 
@@ -43,6 +45,18 @@ const options = {
   apis: ["./routes/**/*.route.js"],
 };
 
+let schema = buildSchema(`
+  type Query {
+    hello: String
+  }
+`);
+
+let root = {
+  hello: function () {
+    return "Hello world!";
+  },
+};
+
 const swaggerSpec = swaggerJSDoc(options);
 
 dotenv.config();
@@ -55,6 +69,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema: schema,
+    rootValue: root,
+    graphiql: true,
+  })
+);
 app.use("/", indexRouter);
 
 // Catch 404 and forward to error handler
