@@ -5,7 +5,7 @@ const {
   GraphQLInt,
   GraphQLNonNull,
 } = require("graphql");
-g
+
 const { RoomGql } = require("./room-gql");
 
 // TODO: Change someApi

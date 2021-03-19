@@ -20,4 +20,4 @@ const RoomGql = new GraphQLObjectType({
   },
 });
 
-module.exports = {RoomGql};
+module.exports = { RoomGql };
