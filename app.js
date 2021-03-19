@@ -66,7 +66,6 @@ const services = {
 
 
 app.use("/graphql", (req, res) => {
-  console.log(schema)
   graphqlHTTP({
     schema: schema,
     graphiql: true,
