@@ -3,6 +3,24 @@ const { HttpError } = require("./errorHandler");
 const User = require("../models/User");
 const { Roles } = require("../utilities/role.utility");
 
+function addRoleToRequest(req, res, next) {
+  const authHeader = req.header("Authorization");
+  if (!authHeader) {
+    next()
+  } else {
+    const [type, token] = [authHeader.substring(0, 6), authHeader.substring(7)];
+    if (type !== "Bearer" && !token) {
+      throw new HttpError(401, "Invalid token");
+    }
+    try {
+      req.verifiedUser = jwt.verify(token, process.env.TOKEN_SECRET);
+      next();
+    } catch (error) {
+      throw new HttpError(401, "Invalid token.");
+    }
+  }
+}
+
 function verifyToken(req, res, next) {
   const authHeader = req.header("Authorization");
   if (!authHeader) {
@@ -45,4 +63,5 @@ function hasRole(role) {
 module.exports = {
   verifyToken,
   hasRole,
+  addRoleToRequest,
 };

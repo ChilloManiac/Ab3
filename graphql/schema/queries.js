@@ -5,6 +5,7 @@ const {
   GraphQLNonNull,
   GraphQLInt,
   GraphQLInputObjectType,
+  GraphQLBoolean
 } = require("graphql");
 const { RoomGql } = require("./types/room-gql");
 
@@ -13,6 +14,9 @@ const filterType = new GraphQLInputObjectType({
   fields: {
     numberOfBeds: {
       type: GraphQLInt,
+    },
+    vacant: {
+      type: GraphQLBoolean,
     },
   },
 });
@@ -23,9 +27,10 @@ const QueryType = new GraphQLObjectType({
     rooms: {
       type: new GraphQLList(new GraphQLNonNull(RoomGql)),
       args: { filter: { type: filterType } },
-      resolve: async (source, { filter }, { services }) => {
-        const rooms = await services.roomService.getAllVacantRooms();
-        if (!!filter.numberOfBeds) {
+      resolve: async (source, { filter }, { services, verifiedUser}) => {
+        console.log(verifiedUser)
+        const rooms = filter?.vacant ? await services.roomService.getAllVacantRooms() : await services.roomService.getAllRooms();
+        if (!!filter?.numberOfBeds) {
           return rooms.filter(
             (room) => room.numberOfBeds === filter.numberOfBeds
           );

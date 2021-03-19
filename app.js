@@ -8,6 +8,7 @@ const dotenv = require("dotenv");
 const { errorHandler } = require("./middleware/errorHandler");
 const { graphqlHTTP } = require("express-graphql");
 const { schema } = require("./graphql/schema");
+const { addRoleToRequest } = require("./middleware/authentication");
 
 
 var indexRouter = require("./routes/index");
@@ -64,12 +65,12 @@ const services = {
   hotelService: require('./routes/hotel/hotel.service.js'),
 }
 
-
+app.use(addRoleToRequest);
 app.use("/graphql", (req, res) => {
   graphqlHTTP({
     schema: schema,
     graphiql: true,
-    context: {services},
+    context: {services, verifiedUser: req.verifiedUser},
   })(req, res)
 }
 );

@@ -3,7 +3,13 @@ const {
   GraphQLInt,
   GraphQLNonNull,
   GraphQLBoolean,
+  GraphQLInputObjectType,
+  GraphQLString,
 } = require("graphql");
+
+const numberOfBedsType = { type: GraphQLInt}
+const isOccupiedType = { type: GraphQLBoolean}
+const roomNumberType = { type: GraphQLInt}
 
 const RoomGql = new GraphQLObjectType({
   name: "Room",
@@ -20,4 +26,16 @@ const RoomGql = new GraphQLObjectType({
   },
 });
 
-module.exports = { RoomGql };
+const AddRoomInputType = new GraphQLInputObjectType({
+  name: "AddRoomInput",
+  fields: {
+    numberOfBeds: numberOfBedsType,
+    isOccupied: isOccupiedType,
+    roomNumber: roomNumberType,
+    hotelName: {
+      type: GraphQLString,
+    }
+  },
+});
+
+module.exports = { RoomGql, AddRoomInputType };
