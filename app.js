@@ -6,8 +6,8 @@ var logger = require("morgan");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const { errorHandler } = require("./middleware/errorHandler");
-const { graphqlHTTP } = require('express-graphql');
-const { buildSchema } = require('graphql');
+const { graphqlHTTP } = require("express-graphql");
+const { schema } = require("./graphql/schema");
 
 var indexRouter = require("./routes/index");
 
@@ -44,12 +44,6 @@ const options = {
   swaggerDefinition,
   apis: ["./routes/**/*.route.js"],
 };
-
-let schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
 
 let root = {
   hello: function () {
