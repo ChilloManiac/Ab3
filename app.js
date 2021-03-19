@@ -9,6 +9,7 @@ const { errorHandler } = require("./middleware/errorHandler");
 const { graphqlHTTP } = require("express-graphql");
 const { schema } = require("./graphql/schema");
 
+
 var indexRouter = require("./routes/index");
 
 // Swagger configuration
@@ -57,11 +58,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+const services = {
+  roomService: require('./routes/room/room.service.js'),
+  hotelService: require('./routes/hotel/hotel.service.js'),
+}
+
+
 app.use("/graphql", (req, res) => {
   console.log(schema)
   graphqlHTTP({
     schema: schema,
     graphiql: true,
+    context: {services},
   })(req, res)
 }
 );
