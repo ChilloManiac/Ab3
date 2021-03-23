@@ -51,7 +51,7 @@ const addRoom = (req, res, next) => {
   }
 
   hotelService
-    .addRoom(name, roomNumber, numberOfBeds, verifiedUser)
+    .addRoom(name, roomNumber, {numberOfBeds}, verifiedUser)
     .then((room) => res.status(200).send(room))
     .catch((error) => next(error));
 };

@@ -4,6 +4,9 @@ const roomSchema = new mongoose.Schema({
   roomNumber: { type: Number, required: true },
   numberOfBeds: { type: Number, required: true },
   isOccupied: { type: Boolean, required: true },
+  seaView: {type: Boolean, default: false},
+  miniBar: {type: Boolean, default: true},
+  numberOfRestrooms: {type: Number, default: 1}
 });
 
 const hotelSchema = new mongoose.Schema({
@@ -15,7 +18,4 @@ const hotelSchema = new mongoose.Schema({
   owner: { type: String, required: true },
 });
 
-const Hotel = mongoose.model("Hotel", hotelSchema);
-Hotel.createIndexes();
-
-module.exports = Hotel;
+module.exports = mongoose.model("Hotel", hotelSchema);

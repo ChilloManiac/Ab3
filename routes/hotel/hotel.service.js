@@ -2,7 +2,7 @@ const Hotel = require("../../models/hotel");
 const { HttpError } = require("../../middleware/errorHandler");
 
 const getHotels = async () => {
-  return Hotel.find({});
+  return await Hotel.find({});
 };
 
 const getHotel = async (hotelName) => {
@@ -14,19 +14,21 @@ const getHotel = async (hotelName) => {
   }
 };
 
-const addRoom = async (hotelName, roomNumber, numberOfBeds, verifiedUser) => {
+const addRoom = async (hotelName, roomNumber, roomProps, verifiedUser) => {
   const hotel = await getHotel(hotelName);
+  const id = verifiedUser._id;
+  const owner = hotel.owner;
   if (verifiedUser._id == hotel.owner) {
     const room = {
-      roomNumber: roomNumber,
-      numberOfBeds: numberOfBeds,
-      isOccupied: false,
+      roomNumber,
+      ...roomProps,
     };
     hotel.rooms.push(room);
     try {
-      return await hotel.save();
+      await hotel.save();
+      return room;
     } catch (error) {
-      throw new HttpError(400, "Roomnumber already exists.");
+      throw new HttpError(400, error);
     }
   } else {
     throw new HttpError(403, "Access denied.");
@@ -81,26 +83,26 @@ async function getRoomByRoomNumber(hotelName, roomNumber) {
   };
 }
 
-async function updateRoom(hotelName, updatedRoom, roomNumber) {
+// (hotelName, roomNumber, roomProps, verifiedUser) => {
+async function updateRoom(hotelName, roomNumber, roomProps, verifiedUser) {
   const hotel = await getHotel(hotelName);
-  let room = hotel.rooms.find((room) => room.roomNumber == roomNumber);
-  if (!room) {
-    throw new HttpError(400, "Room does not exist.");
-  }
-  room.isOccupied = updatedRoom.isOccupied;
-  room.numberOfBeds = updatedRoom.numberOfBeds;
-  try {
-    roomAfterSave = await hotel.save();
-    return {
-      roomNumber: room.roomNumber,
-      numberOfBeds: room.numberOfBeds,
-      isOccupied: room.isOccupied,
-    };
-  } catch (error) {
-    throw new HttpError(
-      400,
-      `Couldn't save room ${roomNumber} in ${hotelName}`
-    );
+  if (verifiedUser._id == hotel.owner) {
+    let room = hotel.rooms.find((room) => room.roomNumber == roomNumber);
+    if (!room) {
+      throw new HttpError(400, "Room does not exist.");
+    }
+    Object.assign(room, roomProps);
+    try {
+      await hotel.save();
+      return room;
+    } catch (error) {
+      throw new HttpError(
+        400,
+        `Couldn't save room ${roomNumber} in ${hotelName}`
+      );
+    }
+  } else {
+    throw new HttpError(403, "Access denied.");
   }
 }
 

@@ -70,7 +70,7 @@ app.use("/graphql", (req, res) => {
   graphqlHTTP({
     schema: schema,
     graphiql: true,
-    context: {services, verifiedUser: req.verifiedUser},
+    context: {services, user: req.verifiedUser},
   })(req, res)
 }
 );

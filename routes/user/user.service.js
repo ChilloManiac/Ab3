@@ -36,7 +36,10 @@ async function login(username, password) {
     throw new HttpError(400, "Username or password is wrong.");
   }
   return {
-    token: jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET),
+    token: jwt.sign(
+      { _id: user._id, role: user.role },
+      process.env.TOKEN_SECRET
+    ),
   };
 }
 
