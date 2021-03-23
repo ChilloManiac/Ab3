@@ -29,9 +29,10 @@ const QueryType = new GraphQLObjectType({
       type: new GraphQLList(new GraphQLNonNull(RoomGql)),
       args: { filter: { type: filterType } },
       resolve: async (source, { filter }, { services, verifiedUser }) => {
-        const rooms = filter?.vacant
-          ? await services.roomService.getAllVacantRooms()
-          : await services.roomService.getAllRooms();
+        let rooms = await services.roomService.getAllRooms();
+        if (!!filter && "vacant" in filter) {
+          rooms = rooms.filter((room) => room.isOccupied != filter.vacant);
+        }
         if (!!filter?.numberOfBeds) {
           return rooms.filter(
             (room) => room.numberOfBeds === filter.numberOfBeds

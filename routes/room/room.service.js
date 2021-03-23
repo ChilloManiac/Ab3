@@ -1,8 +1,8 @@
 const Hotel = require("../../models/hotel");
 
 async function getAllVacantRooms() {
-  const hotels = await Hotel.find();
-  return await getAllRooms().filter((room) => !room.isOccupied);
+  const rooms = await getAllRooms();
+  return rooms.filter((room) => !room.isOccupied);
 }
 
 async function getAllRooms() {
