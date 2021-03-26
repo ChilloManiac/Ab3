@@ -5,13 +5,12 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const { errorHandler } = require("./middleware/errorHandler");
+const { errorHandler } = require("../middleware/errorHandler");
 const { graphqlHTTP } = require("express-graphql");
-const { schema } = require("./graphql/schema");
-const { addRoleToRequest } = require("./middleware/authentication");
+const { schema } = require("../graphql/schema");
+const { addRoleToRequest } = require("../middleware/authentication");
 
-
-var indexRouter = require("./routes/index");
+var indexRouter = require("../routes/index");
 
 // Swagger configuration
 const swaggerJSDoc = require("swagger-jsdoc");
@@ -44,7 +43,7 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: ["./routes/**/*.route.js"],
+  apis: ["../routes/**/*.route.js"],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
@@ -61,19 +60,18 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const services = {
-  roomService: require('./routes/room/room.service.js'),
-  hotelService: require('./routes/hotel/hotel.service.js'),
-}
+  roomService: require("../routes/room/room.service.js"),
+  hotelService: require("../routes/hotel/hotel.service.js"),
+};
 
 app.use(addRoleToRequest);
 app.use("/graphql", (req, res) => {
   graphqlHTTP({
     schema: schema,
     graphiql: true,
-    context: {services, user: req.verifiedUser},
-  })(req, res)
-}
-);
+    context: { services, user: req.verifiedUser },
+  })(req, res);
+});
 app.use("/", indexRouter);
 
 // Catch 404 and forward to error handler
