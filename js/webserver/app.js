@@ -5,10 +5,10 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const { errorHandler } = require("../middleware/errorHandler");
-const { graphqlHTTP } = require("express-graphql");
-const { schema } = require("../graphql/schema");
-const { addRoleToRequest } = require("../middleware/authentication");
+const {errorHandler} = require("../middleware/errorHandler");
+const {graphqlHTTP} = require("express-graphql");
+const {schema} = require("../graphql/schema");
+const {addRoleToRequest} = require("../middleware/authentication");
 
 var indexRouter = require("../routes/index");
 
@@ -43,8 +43,9 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: ["../routes/**/*.route.js"],
+  apis: ["./routes/**/*.route.js"],
 };
+
 
 const swaggerSpec = swaggerJSDoc(options);
 
@@ -54,7 +55,7 @@ var app = express();
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -69,7 +70,7 @@ app.use("/graphql", (req, res) => {
   graphqlHTTP({
     schema: schema,
     graphiql: true,
-    context: { services, user: req.verifiedUser },
+    context: {services, user: req.verifiedUser},
   })(req, res);
 });
 app.use("/", indexRouter);
