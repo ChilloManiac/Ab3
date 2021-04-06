@@ -8,9 +8,9 @@ namespace Reservation
     public class ReservationMessage
     {
         public string hotelName { get; private set; }
-        public string roomNumber { get; private set; }
+        public int roomNumber { get; private set; }
 
-        public ReservationMessage(string hotelName, string roomNumber)
+        public ReservationMessage(string hotelName, int roomNumber)
         {
             this.hotelName = hotelName;
             this.roomNumber = roomNumber;

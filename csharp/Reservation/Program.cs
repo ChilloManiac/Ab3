@@ -33,7 +33,14 @@ namespace Reservation
                                 var hotelName = Console.ReadLine();
                                 Console.WriteLine("Enter a room number");
                                 var roomNumber = Console.ReadLine();
-                                SendMessage(channel, new ReservationMessage(hotelName, roomNumber));
+                                if (!String.IsNullOrEmpty(roomNumber))
+                                {
+                                    SendMessage(channel, new ReservationMessage(hotelName, Int32.Parse(roomNumber)));
+                                }
+                                else
+                                {
+                                    Console.WriteLine("RoomNumber cannot be empty.");
+                                }
 
                                 break;
                             }
@@ -64,7 +71,7 @@ namespace Reservation
             var message = JsonSerializer.Serialize(reservationMessage);
             var body = Encoding.UTF8.GetBytes(message);
             channel.BasicPublish(exchange: "",
-                routingKey: "reservation",
+                routingKey: "reservations",
                 basicProperties: null,
                 body: body);
             Console.WriteLine("Sent {0}", message);
