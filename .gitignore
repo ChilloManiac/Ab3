@@ -107,3 +107,4 @@ dist
 #Csharp
 csharp/**/bin/
 csharp/**/obj/
+csharp/.idea/
