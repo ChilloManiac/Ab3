@@ -7,6 +7,7 @@ function getAllVacantRooms(req, res, next) {
     .catch((error) => next(error));
 }
 
+
 module.exports = {
-  getAllVacantRooms,
+  getAllVacantRooms
 };

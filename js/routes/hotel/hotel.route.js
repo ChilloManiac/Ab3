@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const hotelController = require('./hotel.controller');
-const { verifyToken, hasRole } = require("../../middleware/authentication");
+const {verifyToken, hasRole} = require("../../middleware/authentication");
 const {Roles} = require("../../utilities/role.utility")
 
 /**
@@ -147,6 +147,7 @@ router.get('/:name/room/:roomNumber', [verifyToken, hasRole(Roles.Manager)], hot
 router.get('/:name/room', [verifyToken, hasRole(Roles.Manager)], hotelController.getVacantRooms)
 router.post('/:name/room', [verifyToken, hasRole(Roles.Manager)], hotelController.addRoom)
 router.put('/:name/room/:roomNumber', [verifyToken, hasRole(Roles.Manager)], hotelController.updateRoom)
+router.post('/:name/room/:roomNumber/reserve', [], hotelController.reserveRoom);
 /**
  *  @swagger
  *  /hotel/{name}:
