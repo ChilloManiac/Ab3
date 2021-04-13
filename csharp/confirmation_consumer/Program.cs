@@ -25,7 +25,7 @@ namespace confirmation_consumer
                 consumer.Received += (model, ea) =>
                 {
                     var message = Encoding.UTF8.GetString(ea.Body.ToArray());
-                    var confirmation = JsonConvert.DeserializeObject<IConformation>(message);
+                    var confirmation = JsonConvert.DeserializeObject<IConfirmation>(message);
                     var status = confirmation.success ? "succeded" : "failed";
                     Console.WriteLine("Reserving room {0} in {1} {2}",confirmation.roomNumber, confirmation.hotelName, status);
                 };
