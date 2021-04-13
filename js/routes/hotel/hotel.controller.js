@@ -100,7 +100,7 @@ const getRoomByRoomNumber = (req, res, next) => {
 const reserveRoom = (req, res) => {
   const {name, roomNumber} = req.params;
   const request = {
-    roomNumber,
+    roomNumber: parseInt(roomNumber),
     hotelName: name,
   }
   req.mq.sendToQueue('reservations', Buffer.from(JSON.stringify(request)))
