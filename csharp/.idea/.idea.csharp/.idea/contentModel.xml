@@ -5,7 +5,6 @@
       <e p="confirmation_consumer" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
         <e p="confirmation_consumer.csproj" t="IncludeRecursive" />
-        <e p="Consumer.cs" t="Include" />
         <e p="IConformation.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -29,6 +28,7 @@
         </e>
         <e p="Program.cs" t="Include" />
         <e p="Reservation.csproj" t="IncludeRecursive" />
+        <e p="ReservationMessage.cs" t="Include" />
       </e>
     </e>
     <e p="$USER_HOME$/Library/Caches/Rider2019.3/extResources" t="IncludeRecursive" />

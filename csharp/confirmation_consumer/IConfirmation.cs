@@ -1,6 +1,6 @@
 namespace confirmation_consumer
 {
-    public interface IConformation
+    public interface IConfirmation
     {
         public bool success { get; set; }
         public string hotelName { get; set; }
