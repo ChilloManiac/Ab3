@@ -97,6 +97,16 @@ const getRoomByRoomNumber = (req, res, next) => {
     .catch((error) => next(error));
 };
 
+const reserveRoom = (req, res) => {
+  const {name, roomNumber} = req.params;
+  const request = {
+    roomNumber,
+    hotelName: name,
+  }
+  req.mq.sendToQueue('reservations', Buffer.from(JSON.stringify(request)))
+  res.status(200).send('OK')
+}
+
 module.exports = {
   getHotels,
   getHotel,
@@ -105,4 +115,5 @@ module.exports = {
   getVacantRooms,
   getRoomByRoomNumber,
   updateRoom,
+  reserveRoom,
 };

@@ -68,6 +68,7 @@ const handleReservation = (channel) => async (msg) => {
     success
   }
   console.log(response)
+  channel.ack(msg);
   channel.sendToQueue(CONFIRMATIONS_QUEUE, Buffer.from(JSON.stringify(response)));
 }
 

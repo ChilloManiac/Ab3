@@ -17,11 +17,12 @@ async function getAllRooms() {
   );
 }
 
+// This is to reserve a room in the reservations handler mq
 async function reserveRoom(hotelName, roomNumber) {
   const hotel = await Hotel.findOne({name: hotelName});
   if (!hotel)
     throw "Hotel not found"
-  const room = hotel.rooms.find((r) => r.roomNumber === roomNumber);
+  const room = hotel.rooms.find((r) => r.roomNumber == roomNumber);
   if (!room)
     throw "Room not found"
   if (room.isOccupied)
@@ -29,6 +30,7 @@ async function reserveRoom(hotelName, roomNumber) {
   room.isOccupied = true;
   await hotel.save();
 }
+
 
 module.exports = {
   getAllVacantRooms,

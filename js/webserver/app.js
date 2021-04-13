@@ -9,6 +9,7 @@ const {errorHandler} = require("../middleware/errorHandler");
 const {graphqlHTTP} = require("express-graphql");
 const {schema} = require("../graphql/schema");
 const {addRoleToRequest} = require("../middleware/authentication");
+const amqp = require('amqplib/callback_api');
 
 var indexRouter = require("../routes/index");
 
@@ -64,6 +65,30 @@ const services = {
   roomService: require("../routes/room/room.service.js"),
   hotelService: require("../routes/hotel/hotel.service.js"),
 };
+
+let mqchannel = null;
+amqp.connect('amqp://localhost', (err, conn) => {
+  if (err)
+    throw err
+  conn.createChannel((err, channel) => {
+    if (err)
+      throw err
+    const config = {
+      durable: false,
+    };
+    channel.assertQueue('reservations', config, (err, _) => {
+      if (err)
+        throw err
+    })
+    mqchannel = channel
+  })
+})
+
+
+app.use((req, _res, next) => {
+  req.mq = mqchannel;
+  next();
+})
 
 app.use(addRoleToRequest);
 app.use("/graphql", (req, res) => {
