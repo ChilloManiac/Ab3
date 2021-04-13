@@ -35,7 +35,6 @@ namespace confirmation_consumer
                     {
                     Console.WriteLine(e.Message);
                     }
-                    Console.WriteLine(confirmation.success);
                     var status = confirmation.success ? "succeded" : "failed";
                     Console.WriteLine("Reserving room {0} in {1} {2}", confirmation.roomNumber, confirmation.hotelName, status);
                 };
