@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Text;
-using System.Text.Json.Serialization;
-using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+
 
 namespace confirmation_consumer
 {
@@ -25,13 +26,25 @@ namespace confirmation_consumer
                 consumer.Received += (model, ea) =>
                 {
                     var message = Encoding.UTF8.GetString(ea.Body.ToArray());
-                    var confirmation = JsonConvert.DeserializeObject<IConfirmation>(message);
+                    Confirmation confirmation = null;
+                    try
+                    {
+                        confirmation = JsonSerializer.Deserialize<Confirmation>(message);
+                    }
+                    catch (System.Exception e)
+                    {
+                    Console.WriteLine(e.Message);
+                    }
+                    Console.WriteLine(confirmation.success);
                     var status = confirmation.success ? "succeded" : "failed";
-                    Console.WriteLine("Reserving room {0} in {1} {2}",confirmation.roomNumber, confirmation.hotelName, status);
+                    Console.WriteLine("Reserving room {0} in {1} {2}", confirmation.roomNumber, confirmation.hotelName, status);
                 };
                 channel.BasicConsume(queue: CONFIRMATIONS_Q,
                     autoAck: true,
                     consumer: consumer);
+                while (true)
+                {
+                }
             }
         }
     }
